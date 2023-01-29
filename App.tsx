@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useFonts, Karla_400Regular, Karla_700Bold } from '@expo-google-fonts/karla';
 
 import { NativeBaseProvider } from 'native-base';
-import { THEME } from 'src/theme';
+import { THEME } from './src/theme';
 
 import { Text } from 'react-native';
 
