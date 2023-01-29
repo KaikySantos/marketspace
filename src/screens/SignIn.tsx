@@ -3,10 +3,14 @@ import { Box, Center, ScrollView, Text, VStack } from "native-base";
 import LogoSvg from '@assets/logo.svg';
 import LogoName from '@assets/logoName.svg';
 
+import { Button } from "@components/Button";
+
+import { Alarm } from 'phosphor-react-native';
+
 export function SignIn() {
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
-      <VStack flex={1} bg="gray.600">
+      <VStack px={12} flex={1} bg="gray.600" borderBottomRadius={24}>
         <Center mt={24}>
           <LogoSvg />
           <LogoName style={{ marginTop: 20 }} />
@@ -19,14 +23,25 @@ export function SignIn() {
           <Text color="gray.200">
             Acesse sua conta
           </Text>
+
+          <Button
+            mt={8}
+            title="Entrar"
+            variant="blue"
+          />
         </Center>
       </VStack>
 
-      <Box px={12} py={16}>
+      <Box px={12} pb={16} pt={12}>
         <Center>
           <Text color="gray.200" fontSize="sm" fontFamily="body">
             Ainda não tem acesso?
           </Text>
+
+          <Button
+            mt={4}
+            title="Criar uma conta"
+          />
         </Center>
       </Box>
     </ScrollView>
