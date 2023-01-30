@@ -4,8 +4,7 @@ import LogoSvg from '@assets/logo.svg';
 import LogoName from '@assets/logoName.svg';
 
 import { Button } from "@components/Button";
-
-import { Alarm } from 'phosphor-react-native';
+import { Input } from "@components/Input";
 
 export function SignIn() {
   return (
@@ -20,9 +19,13 @@ export function SignIn() {
         </Center>
 
         <Center mt={24}>
-          <Text color="gray.200">
+          <Text color="gray.200" mb={4}>
             Acesse sua conta
           </Text>
+
+          <Input placeholder="E-mail" />
+
+          <Input placeholder="Senha" />
 
           <Button
             mt={8}
