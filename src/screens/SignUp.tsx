@@ -66,7 +66,7 @@ export function SignUp() {
 
           <Controller
             control={control}
-            name=""
+            name="name"
             render={({ field: { onChange, value } }) => (
               <Input
                 placeholder="Nome"
@@ -77,22 +77,67 @@ export function SignUp() {
             )}
           />
 
-          <Input placeholder="E-mail" />
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="E-mail"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.email?.message}
+              />
+            )}
+          />
 
-          <Input placeholder="Telefone" />
+          <Controller
+            control={control}
+            name="number"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Telefone"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.number?.message}
+              />
+            )}
+          />
+
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Senha"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.password?.message}
+              />
+            )}
+          />
           
-          <Input placeholder="Senha" />
-
-          <Input placeholder="Confirmar a senha" />
+          <Controller
+            control={control}
+            name="password_confirm"
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Confirmar a senha"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.password_confirm?.message}
+              />
+            )}
+          />
 
           <Button
             mt={2}
             title="Criar"
             variant="black"
+            onPress={handleSubmit(handleSignUp)}
           />
         </Center>
 
-        <Center>
+        <Center pb={8}>
           <Text color="gray.200" fontSize="sm" fontFamily="body" mt={12}>
             Já tem uma conta?
           </Text>
