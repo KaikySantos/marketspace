@@ -1,11 +1,42 @@
-import { Box, Center, Heading, ScrollView, Text, VStack } from "native-base";
+import { Box, Center, Heading, Pressable, ScrollView, Text, VStack } from "native-base";
+
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
 import LogoSvg from '@assets/logo.svg';
 
 import { Button } from "@components/Button";
 import { Input } from "@components/Input";
+import { UserPhoto } from "@components/UserPhoto";
+
+import { PencilSimpleLine } from "phosphor-react-native";
+
+type FormDataProps = {
+  name: string;
+  email: string;
+  number: string;
+  password: string;
+  password_confirm: string;
+}
+
+const signUpSchema = yup.object({
+  name: yup.string().required('Informe o nome.'),
+  email: yup.string().required('Informe o e-mail.').email('E-mail inválido.'),
+  number: yup.string().required('Informe o telefone.'),
+  password: yup.string().required('Informe a senha.').min(6, 'A senha deve ter pelo menos 6 dígitos.'),
+  password_confirm: yup.string().required('Confirme a senha.').oneOf([yup.ref('password'), null], 'A confirmação da senha não confere.')
+});
 
 export function SignUp() {
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
+    resolver: yupResolver(signUpSchema)
+  });
+
+  function handleSignUp(data: FormDataProps) {
+    console.log(data);
+  }
+
   return (
     <ScrollView contentContainerStyle={{ flexGrow: 1 }} showsVerticalScrollIndicator={false}>
       <VStack px={12} flex={1} bg="gray.600" borderBottomRadius={24}>
@@ -21,8 +52,30 @@ export function SignUp() {
           </Text>
         </Center>
 
-        <Center mt={24}>
-          <Input placeholder="Nome" />
+        <Center mt={8}>
+          <Box mb={4}>
+            <UserPhoto
+              size={24}
+              alt="Imagem do usuário"
+            />
+
+            <Pressable bg="blue.500" position="absolute" bottom={0} right={0} w={10} h={10} rounded="full" alignItems="center" justifyContent="center">
+              <PencilSimpleLine size={16} color="#EDECEE" />
+            </Pressable>
+          </Box>
+
+          <Controller
+            control={control}
+            name=""
+            render={({ field: { onChange, value } }) => (
+              <Input
+                placeholder="Nome"
+                onChangeText={onChange}
+                value={value}
+                errorMessage={errors.name?.message}
+              />
+            )}
+          />
 
           <Input placeholder="E-mail" />
 
