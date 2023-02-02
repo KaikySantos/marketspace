@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
 import { Box, Center, Heading, Pressable, ScrollView, Text, VStack, useToast, useTheme } from "native-base";
 
 import * as ImagePicker from "expo-image-picker";
@@ -44,6 +45,11 @@ export function SignUp() {
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema)
   });
+
+  const navigation = useNavigation();
+  function handleGoBack() {
+    navigation.goBack();
+  }
 
   const toast = useToast();
 
@@ -225,6 +231,7 @@ export function SignUp() {
           <Button
             title="Ir para o login"
             mt={4}
+            onPress={handleGoBack}
           />
         </Center>
       </VStack>
