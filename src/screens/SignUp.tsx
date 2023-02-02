@@ -1,4 +1,8 @@
-import { Box, Center, Heading, Pressable, ScrollView, Text, VStack } from "native-base";
+import { useState } from 'react';
+import { Box, Center, Heading, Pressable, ScrollView, Text, VStack, useToast } from "native-base";
+
+import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -28,13 +32,53 @@ const signUpSchema = yup.object({
   password_confirm: yup.string().required('Confirme a senha.').oneOf([yup.ref('password'), null], 'A confirmação da senha não confere.')
 });
 
+const PHOTO_SIZE = 24;
+
 export function SignUp() {
+  const [userPhoto, setUserPhoto] = useState<string | undefined>(undefined);
+
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(signUpSchema)
   });
 
+  const toast = useToast();
+
+  async function handleUserPhotoSelect() {
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+      });
+  
+      if (photoSelected.canceled) {
+        return;
+      }
+  
+      if (photoSelected.assets[0].uri) {
+        const photoInfo = await FileSystem.getInfoAsync(photoSelected.assets[0].uri);
+
+        if (photoInfo.size && (photoInfo.size / 1024 / 1024) > 5) {
+          return toast.show({
+            title: "Essa imagem é muito grande. Escolha uma de até 5MB.",
+            placement: 'top',
+            bgColor: 'red.500',
+          });
+        }
+
+        setUserPhoto(photoSelected.assets[0].uri);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   function handleSignUp(data: FormDataProps) {
-    console.log(data);
+    console.log("New User: ", {
+      userPhoto,
+      ...data
+    });
   }
 
   return (
@@ -55,11 +99,23 @@ export function SignUp() {
         <Center mt={8}>
           <Box mb={4}>
             <UserPhoto
-              size={24}
+              source={userPhoto ? { uri: userPhoto } : undefined}
+              size={PHOTO_SIZE}
               alt="Imagem do usuário"
             />
 
-            <Pressable bg="blue.500" position="absolute" bottom={0} right={0} w={10} h={10} rounded="full" alignItems="center" justifyContent="center">
+            <Pressable
+              onPress={handleUserPhotoSelect}
+              bg="blue.500"
+              position="absolute"
+              bottom={0}
+              right={0}
+              w={10}
+              h={10}
+              rounded="full"
+              alignItems="center"
+              justifyContent="center"
+            >
               <PencilSimpleLine size={16} color="#EDECEE" />
             </Pressable>
           </Box>
