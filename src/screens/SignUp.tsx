@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Box, Center, Heading, Pressable, ScrollView, Text, VStack, useToast } from "native-base";
+import { Box, Center, Heading, Pressable, ScrollView, Text, VStack, useToast, useTheme } from "native-base";
 
 import * as ImagePicker from "expo-image-picker";
 import * as FileSystem from "expo-file-system";
@@ -14,7 +14,7 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { UserPhoto } from "@components/UserPhoto";
 
-import { PencilSimpleLine } from "phosphor-react-native";
+import { Eye, EyeClosed, EyeSlash, PencilSimpleLine } from "phosphor-react-native";
 
 type FormDataProps = {
   name: string;
@@ -35,6 +35,10 @@ const signUpSchema = yup.object({
 const PHOTO_SIZE = 24;
 
 export function SignUp() {
+  const { colors } = useTheme();
+
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+
   const [userPhoto, setUserPhoto] = useState<string | undefined>(undefined);
 
   const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
@@ -168,6 +172,16 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 errorMessage={errors.password?.message}
+                rightContent={
+                  <Pressable onPress={() => setPasswordIsVisible(!passwordIsVisible)}>
+                    {passwordIsVisible ? (
+                        <EyeSlash size={20} color={colors.gray[300]} />
+                      ) : (
+                        <Eye size={20} color={colors.gray[300]} />
+                    )}
+                  </Pressable>
+                }
+                secureTextEntry={!passwordIsVisible}
               />
             )}
           />
@@ -181,6 +195,16 @@ export function SignUp() {
                 onChangeText={onChange}
                 value={value}
                 errorMessage={errors.password_confirm?.message}
+                rightContent={
+                  <Pressable onPress={() => setPasswordIsVisible(!passwordIsVisible)}>
+                    {passwordIsVisible ? (
+                        <EyeSlash size={20} color={colors.gray[300]} />
+                      ) : (
+                        <Eye size={20} color={colors.gray[300]} />
+                    )}
+                  </Pressable>
+                }
+                secureTextEntry={!passwordIsVisible}
               />
             )}
           />
