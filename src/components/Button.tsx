@@ -21,13 +21,13 @@ function getBbColor(variant: Variants): [ColorType, ColorType] {
   }
 }
 
-export function Button({ title, icon, variant = 'gray', ...rest }: Props) {
+export function Button({ title, w = "full", icon, variant = 'gray', ...rest }: Props) {
   const [bgColorButton, bgColorButtonPressed] = getBbColor(variant);
   const textColorButton: ColorType = variant === 'gray' ? 'gray.200' : 'gray.700';
 
   return (
     <ButtonNativeBase
-      w="full"
+      w={w}
       h={11}
       bg={bgColorButton}
       borderWidth={0}
@@ -37,7 +37,7 @@ export function Button({ title, icon, variant = 'gray', ...rest }: Props) {
       }}
       {...rest}
     >
-      <HStack space={2}>
+      <HStack space={2} alignItems="center">
         {icon}
         <Text
           color={textColorButton}

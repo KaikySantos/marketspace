@@ -1,7 +1,5 @@
 import { Input as NativeBaseInput, IInputProps, FormControl, Box } from 'native-base';
 
-import { Eye } from 'phosphor-react-native';
-
 type Props = IInputProps & {
   errorMessage?: string | null;
   leftContent?: JSX.Element;

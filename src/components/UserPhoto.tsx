@@ -4,7 +4,7 @@ type Props = IImageProps & {
   size: number;
 }
 
-export function UserPhoto({ size, source, ...rest }: Props) {
+export function UserPhoto({ size, borderWidth = 3, source, ...rest }: Props) {
   const src = source ? source : { uri: "https://www.gov.br/cdn/sso-status-bar/src/image/user.png" };
 
   return (
@@ -13,7 +13,7 @@ export function UserPhoto({ size, source, ...rest }: Props) {
       w={size}
       h={size}
       rounded="full"
-      borderWidth={3}
+      borderWidth={borderWidth}
       borderColor="blue.500"
       {...rest}
     />
