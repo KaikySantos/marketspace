@@ -6,7 +6,7 @@ import { THEME } from './src/theme';
 import { Loading } from '@components/Loading';
 
 // import { Routes } from '@routes/index';
-import { AdPreview } from '@screens/AdPreview';
+import { MyAdDetails } from '@screens/MyAdDetails';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Karla_400Regular, Karla_700Bold })
@@ -19,7 +19,7 @@ export default function App() {
         translucent
       />
 
-      {fontsLoaded ? <AdPreview /> : <Loading />}
+      {fontsLoaded ? <MyAdDetails /> : <Loading />}
     </NativeBaseProvider>
   );
 }
