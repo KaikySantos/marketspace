@@ -1,9 +1,22 @@
+import { RefObject } from 'react';
+import { BottomSheetMethods } from '@gorhom/bottom-sheet/lib/typescript/types';
 import { Input as NativeBaseInput, FormControl, Box, useTheme, Pressable, HStack } from 'native-base';
 
 import { MagnifyingGlass, Sliders } from 'phosphor-react-native';
 
-export function FilterInput() {
+type FilterInputProps = {
+  setSheetIsOpen: (status: boolean) => void;
+  sheetIsOpen: boolean;
+  sheetRef: RefObject<BottomSheetMethods>;
+}
+
+export function FilterInput({ setSheetIsOpen, sheetIsOpen, sheetRef }: FilterInputProps) {
   const { colors } = useTheme();
+
+  function handleBottomSheet() {
+    sheetRef.current?.expand();
+    setSheetIsOpen(true);
+  }
 
   return (
     <FormControl>
@@ -24,6 +37,7 @@ export function FilterInput() {
           borderColor: "gray.300"
         }}
         placeholder="Buscar anúncio"
+        isDisabled={sheetIsOpen}
       />
 
       <HStack mr={4} space={3} alignItems="center" position="absolute" right={0}>
@@ -35,7 +49,12 @@ export function FilterInput() {
           h={4.5}
           bg="black"
         />
-        <Pressable  h={11.5} justifyContent="center" alignItems="center">
+        <Pressable
+          h={11.5}
+          justifyContent="center"
+          alignItems="center"
+          onPress={handleBottomSheet}
+        >
           <Sliders size={20} color={colors.gray[200]} />
         </Pressable>
       </HStack>
