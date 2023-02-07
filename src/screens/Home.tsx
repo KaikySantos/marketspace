@@ -7,7 +7,7 @@ import { UserPhoto } from "@components/UserPhoto";
 import { Button } from "@components/Button";
 import { FilterInput } from "@components/FilterInput";
 import { AdCard } from "@components/AdCard";
-import { FilterModal } from "@components/FilterModal";
+import { FilterModal, FilterProps, initialFilters } from "@components/FilterModal";
 
 import { ArrowRight, Plus, Tag } from "phosphor-react-native";
 
@@ -17,10 +17,12 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export function Home() {
+  const { colors } = useTheme();
+
   const sheetRef = useRef<BottomSheet>(null);
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
 
-  const { colors } = useTheme();
+  const [filters, setFilters] = useState<FilterProps>(initialFilters);
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -76,7 +78,11 @@ export function Home() {
           Compre produtos variados
         </Text>
         
-        <FilterInput setSheetIsOpen={setSheetIsOpen} sheetIsOpen={sheetIsOpen} sheetRef={sheetRef} />
+        <FilterInput
+          setSheetIsOpen={setSheetIsOpen}
+          sheetIsOpen={sheetIsOpen}
+          sheetRef={sheetRef}
+        />
 
         <FlatList
           columnWrapperStyle={{justifyContent: 'space-between'}}
@@ -97,7 +103,13 @@ export function Home() {
         />
       </VStack>
 
-      <FilterModal setSheetIsOpen={setSheetIsOpen} sheetIsOpen={sheetIsOpen} sheetRef={sheetRef} />
+      <FilterModal
+        filters={filters}
+        setFilters={setFilters}
+        setSheetIsOpen={setSheetIsOpen}
+        sheetIsOpen={sheetIsOpen}
+        sheetRef={sheetRef}
+      />
     </GestureHandlerRootView>
   ); 
 }

@@ -13,6 +13,10 @@ type FilterInputProps = {
 export function FilterInput({ setSheetIsOpen, sheetIsOpen, sheetRef }: FilterInputProps) {
   const { colors } = useTheme();
 
+  function handleSearch() {
+
+  }
+
   function handleBottomSheet() {
     sheetRef.current?.expand();
     setSheetIsOpen(true);
@@ -41,7 +45,12 @@ export function FilterInput({ setSheetIsOpen, sheetIsOpen, sheetRef }: FilterInp
       />
 
       <HStack mr={4} space={3} alignItems="center" position="absolute" right={0}>
-        <Pressable  h={11.5} justifyContent="center" alignItems="center">
+        <Pressable
+          h={11.5}
+          justifyContent="center"
+          alignItems="center"
+          onPress={handleSearch}
+        >
           <MagnifyingGlass size={20} color={colors.gray[200]} />
         </Pressable>
         <Box
