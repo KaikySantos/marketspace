@@ -15,7 +15,7 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 import { UserPhoto } from "@components/UserPhoto";
 
-import { Eye, EyeClosed, EyeSlash, PencilSimpleLine } from "phosphor-react-native";
+import { Eye, EyeSlash, PencilSimpleLine } from "phosphor-react-native";
 
 type FormDataProps = {
   name: string;
