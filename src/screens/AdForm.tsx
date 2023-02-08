@@ -1,12 +1,44 @@
+import { useState } from "react";
 import { TouchableOpacity } from "react-native";
-import { Box, Checkbox, Heading, HStack, Radio, ScrollView, Switch, Text, View, VStack } from "native-base";
+import { Checkbox, Heading, HStack, Radio, ScrollView, Switch, Text, View, VStack } from "native-base";
+
+import * as ImagePicker from "expo-image-picker";
 
 import { ArrowLeft } from "phosphor-react-native";
 
 import { Input } from "@components/Input";
 import { Button } from "@components/Button";
+import { ImageGroupInput } from "@components/ImageGroupInput";
 
 export function AdForm() {
+  const [images, setImages] = useState<string[]>([
+  ]);
+
+  function onRemoveImage(index: number) {
+    setImages(state => state.filter((item, i) => i !== index));
+  }
+
+  async function onAddImage() {
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+      });
+  
+      if (photoSelected.canceled) {
+        return;
+      }
+  
+      if (photoSelected.assets[0].uri) {
+        setImages(state => [...state, photoSelected.assets[0].uri]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <View h="full" bg="gray.600">
       <HStack px={7} pt={16} pb={6} borderBottomWidth={1} borderColor="gray.500">
@@ -28,7 +60,7 @@ export function AdForm() {
             Escolha até 3 imagens para mostrar o quando o seu produto é incrível!
           </Text>
 
-          <Box w="100px" h="100px" bg="gray.500" rounded={6} mt={4} />
+          <ImageGroupInput images={images} onAddImage={onAddImage} onRemoveImage={onRemoveImage} />
 
           <Text color="gray.200" fontSize="md" fontFamily="heading" mt={8}>
             Sobre o produto
