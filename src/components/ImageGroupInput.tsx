@@ -1,12 +1,14 @@
 import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
+import * as ImagePicker from "expo-image-picker";
+
 import { Box, HStack, Image, useTheme, View } from "native-base";
 
 import { Plus, XCircle } from "phosphor-react-native";
 
 type ImageGroupInputProps = {
   images: string[]
-  onAddImage: () => void;
+  onAddImage: (image: string[]) => void;
   onRemoveImage: (index: number) => void;
 }
 
@@ -73,6 +75,27 @@ export function ImageGroupInput({ images, onAddImage, onRemoveImage }: ImageGrou
     }
   });
 
+  async function handleAddImage() {
+    try {
+      const photoSelected = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 1,
+        aspect: [4, 4],
+        allowsEditing: true,
+      });
+  
+      if (photoSelected.canceled) {
+        return;
+      }
+  
+      if (photoSelected.assets[0].uri) {
+        onAddImage([...images, photoSelected.assets[0].uri]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <HStack space={2} mt={4}>
       {groupItens.map((item, index) => (
@@ -80,7 +103,7 @@ export function ImageGroupInput({ images, onAddImage, onRemoveImage }: ImageGrou
           {item === "" ? (
             <Box flex={1} h="100px" bg="gray.500" rounded={6} opacity={0} />
           ) : item === "button" ? (
-            <ImageGroupButton onPress={onAddImage} />
+            <ImageGroupButton onPress={handleAddImage} />
           ) : (
             <ImageGroupImage image={item} onPress={() => onRemoveImage(index)} />
           )}
