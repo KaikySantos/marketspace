@@ -2,6 +2,9 @@ import { useEffect, useState } from "react";
 import { TouchableOpacity } from "react-native";
 import { Checkbox, Heading, HStack, Radio, ScrollView, Switch, Text, View, VStack } from "native-base";
 
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
+
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -28,17 +31,16 @@ const adFormSchema = yup.object({
   images: yup.array().min(1, "Adicione pelo menos uma imagem.").of(yup.string()).required("Selecione pelo menos uma imagem."),
   title: yup.string().required('Informe o título.'),
   description: yup.string().required('Informe a descrição.'),
-  isNew: yup.boolean().required("Informe se o produto é novo ou não."),
+  isNew: yup.boolean().required("Informe se o produto é novo ou usado."),
   price: yup.string().required("Informe o valor."),
   acceptTrade: yup.boolean().required("Informe se o produto aceita troda."),
   paymentMethods: yup.array().min(1, "Selecione pelo menos um meio de pagamento.").of(yup.mixed().oneOf(["bankSlip", "pix", "money", "creditCard", "debitCard"])).required("Selecione pelo menos um meio de pagamento.")
 });
 
 export function AdForm() {
-  const [images, setImages] = useState<string[]>([
-  ]);
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
 
-  const { control, handleSubmit, getValues, setValue, formState: { errors } } = useForm<FormDataProps>({
+  const { control, handleSubmit, formState: { errors } } = useForm<FormDataProps>({
     resolver: yupResolver(adFormSchema),
     defaultValues: {
       acceptTrade: false,
@@ -47,27 +49,24 @@ export function AdForm() {
     mode: "onChange"
   });
 
-  function onRemoveImage(index: number) {
-    setImages(state => state.filter((item, i) => i !== index));
-  }
-
   function onSubmit(data: FormDataProps) {
     console.log("Success: ", data);
+
+    navigation.navigate('adPreview');
   }
   
   function onError(error: any) {
     console.log("Error:", error);
-    console.log(getValues());
   }
 
-  useEffect(() => {
-    setValue('images', images);
-  }, [images]);
+  function handleGoBack() {
+    navigation.goBack();
+  }
 
   return (
     <View h="full" bg="gray.600">
       <HStack px={7} pt={16} pb={6} borderBottomWidth={1} borderColor="gray.500">
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleGoBack}>
           <ArrowLeft />
         </TouchableOpacity>
 
@@ -92,8 +91,7 @@ export function AdForm() {
             render={({ field: { onChange, value } }) => (
               <ImageGroupInput
                 images={value}
-                onAddImage={onChange}
-                onRemoveImage={onRemoveImage}
+                onUpdateImages={onChange}
               />
             )}
           />
@@ -259,6 +257,7 @@ export function AdForm() {
         <Button
           title="Cancelar"
           w="48%"
+          onPress={handleGoBack}
         />
 
         <Button

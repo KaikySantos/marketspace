@@ -1,9 +1,9 @@
 import { Box, HStack, Image, Text, useTheme, VStack } from "native-base";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, TouchableOpacityProps } from "react-native";
 
 import { UserPhoto } from "@components/UserPhoto";
 
-type Props = {
+type Props = TouchableOpacityProps & {
   userImage?: string;
   productImage: string;
   title: string;
@@ -12,11 +12,11 @@ type Props = {
   isDisabled?: boolean;
 }
 
-export function AdCard({ userImage, productImage, title, price, type, isDisabled = false }: Props) {
+export function AdCard({ userImage, productImage, title, price, type, isDisabled = false, ...rest }: Props) {
   const { colors } = useTheme();
 
   return (
-    <TouchableOpacity style={{ flex: 1, maxWidth: "47%" }}>
+    <TouchableOpacity style={{ flex: 1, maxWidth: "47%" }} {...rest}>
       <VStack mb={6}>
         <Image
           w="full"

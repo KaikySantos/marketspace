@@ -1,6 +1,9 @@
 import { TouchableOpacity } from "react-native";
 import { Box, Center, HStack, Text, useTheme, View } from "native-base";
 
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
+
 import { ArrowLeft, Tag, WhatsappLogo } from "phosphor-react-native";
 
 import { Button } from "@components/Button";
@@ -9,6 +12,15 @@ import { AdInformation } from "@components/AdInformation";
 
 export function AdPreview() {
   const { colors } = useTheme();
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
+
+  function handleGoBackAndEdit() {
+    navigation.navigate("editAd");
+  }
+
+  function handlePublishAd() {
+    navigation.navigate("myAds");
+  }
 
   return (
     <View h="full" bg="gray.600">
@@ -31,6 +43,7 @@ export function AdPreview() {
           title="Voltar e editar"
           icon={<ArrowLeft color={colors.gray[200]} size={16} />}
           w="48%"
+          onPress={handleGoBackAndEdit}
         />
 
         <Button
@@ -38,6 +51,7 @@ export function AdPreview() {
           icon={<Tag color={colors.gray[600]} size={16} />}
           variant="blue"
           w="48%"
+          onPress={handlePublishAd}
         />
       </HStack>
     </View>

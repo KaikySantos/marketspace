@@ -1,5 +1,6 @@
 import { TouchableOpacity } from "react-native";
 import { Box, HStack, Text, useTheme, View } from "native-base";
+import { useNavigation } from "@react-navigation/native";
 
 import { ArrowLeft, WhatsappLogo } from "phosphor-react-native";
 
@@ -9,11 +10,16 @@ import { AdInformation } from "@components/AdInformation";
 
 export function AdDetails() {
   const { colors } = useTheme();
+  const navigation = useNavigation();
+
+  function handleGoBack() {
+    navigation.goBack();
+  }
 
   return (
     <View h="full" bg="gray.600">
       <Box pt={12} px={7} pb={5}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleGoBack}>
           <ArrowLeft />
         </TouchableOpacity>
       </Box>

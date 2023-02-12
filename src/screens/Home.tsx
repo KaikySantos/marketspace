@@ -1,7 +1,9 @@
 import { useRef, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
 
 import { TouchableOpacity } from "react-native";
-import { FlatList, Heading, HStack, ScrollView, Text, useTheme, View, VStack } from "native-base";
+import { FlatList, Heading, HStack, Text, useTheme, VStack } from "native-base";
 
 import { UserPhoto } from "@components/UserPhoto";
 import { Button } from "@components/Button";
@@ -18,11 +20,20 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 export function Home() {
   const { colors } = useTheme();
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
 
   const sheetRef = useRef<BottomSheet>(null);
   const [sheetIsOpen, setSheetIsOpen] = useState(false);
 
   const [filters, setFilters] = useState<FilterProps>(initialFilters);
+
+  function handleOpenAdDetails(adId: string) {
+    navigation.navigate('adDetails', { adId });
+  }
+
+  function handleNewAd() {
+    navigation.navigate('newAd');
+  }
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -44,6 +55,7 @@ export function Home() {
             icon={<Plus size={16} color={colors.gray[600]} />}
             w={null}
             variant="black"
+            onPress={handleNewAd}
           />
         </HStack>
 
@@ -97,6 +109,7 @@ export function Home() {
               title={item.title}
               price={item.price}
               type={item.type as "new" | "used"}
+              onPress={() => handleOpenAdDetails(item.id)}
             />
           )}
           showsVerticalScrollIndicator={false}

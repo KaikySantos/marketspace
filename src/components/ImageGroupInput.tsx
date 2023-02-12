@@ -8,8 +8,7 @@ import { Plus, XCircle } from "phosphor-react-native";
 
 type ImageGroupInputProps = {
   images: string[]
-  onAddImage: (image: string[]) => void;
-  onRemoveImage: (index: number) => void;
+  onUpdateImages: (image: string[]) => void;
 }
 
 function ImageGroupImage({ image, ...rest }: { image: string } & TouchableOpacityProps) {
@@ -59,7 +58,7 @@ function ImageGroupButton({ ...rest }: TouchableOpacityProps) {
   )
 }
 
-export function ImageGroupInput({ images, onAddImage, onRemoveImage }: ImageGroupInputProps) {
+export function ImageGroupInput({ images, onUpdateImages }: ImageGroupInputProps) {
   let groupItens: string[] = [];
   
   [...new Array(3).keys()].forEach(index => {
@@ -87,13 +86,17 @@ export function ImageGroupInput({ images, onAddImage, onRemoveImage }: ImageGrou
       if (photoSelected.canceled) {
         return;
       }
-  
+
       if (photoSelected.assets[0].uri) {
-        onAddImage([...images, photoSelected.assets[0].uri]);
+        onUpdateImages([...images, photoSelected.assets[0].uri]);
       }
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function onRemoveImage(index: number) {
+    onUpdateImages(images.filter((i, imageIndex) => imageIndex !== index));
   }
 
   return (

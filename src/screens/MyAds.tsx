@@ -1,6 +1,9 @@
 import { TouchableOpacity } from "react-native";
 import { FlatList, Heading, HStack, Select, Text, VStack } from "native-base";
 
+import { useNavigation } from "@react-navigation/native";
+import { AppNavigatorRoutesProps } from "@routes/app.routes";
+
 import { Plus } from "phosphor-react-native";
 
 import { AdCard } from "@components/AdCard";
@@ -8,6 +11,16 @@ import { AdCard } from "@components/AdCard";
 import { PRODUCTS } from "../mocks/products";
 
 export function MyAds() {
+  const navigation = useNavigation<AppNavigatorRoutesProps>();
+
+  function handleNewAd() {
+    navigation.navigate("newAd");
+  }
+
+  function handleOpenMyAdDetail(adId: string) {
+    navigation.navigate("myAdDetails", { adId });
+  }
+
   return (
     <VStack px={7} h="full">
       <HStack pt={16} pb={5}>
@@ -15,7 +28,7 @@ export function MyAds() {
           Meus anúncios
         </Heading>
 
-        <TouchableOpacity>
+        <TouchableOpacity onPress={handleNewAd}>
           <Plus />
         </TouchableOpacity>
       </HStack>
@@ -45,6 +58,7 @@ export function MyAds() {
             price={item.price}
             type={item.type as "new" | "used"}
             isDisabled={item.isDisabled}
+            onPress={() => handleOpenMyAdDetail(item.id)}
           />
         )}
         showsVerticalScrollIndicator={false}
